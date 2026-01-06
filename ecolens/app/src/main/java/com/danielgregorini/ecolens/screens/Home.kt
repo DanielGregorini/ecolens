@@ -17,7 +17,7 @@ fun Home(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "Home page",
+            text = "Home pageee",
             style = MaterialTheme.typography.headlineMedium
         )
     }
