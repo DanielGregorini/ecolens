@@ -12,10 +12,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.danielgregorini.ecolens.ui.components.CameraPreview
+import com.danielgregorini.ecolens.screens.Home
 
 
 class MainActivity : ComponentActivity() {
@@ -49,12 +51,35 @@ fun MainScreen() {
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.fillMaxSize()
     ) {
-
+        /*
         if (hasPermission) {
-            CameraPreview(modifier = Modifier.fillMaxWidth())
+            //CameraPreview(modifier = Modifier.fillMaxWidth())
+               Box(
+                   modifier = Modifier
+                       .fillMaxWidth()
+                       .weight(0.8f)
+                       .fillMaxHeight(),
+
+                   contentAlignment = Alignment.Center
+               ){
+                   Home()
+               }
+
+            //ai coloca os botes de mudar menu, camera, FAQ
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.2f)
+                    .fillMaxHeight(),
+                contentAlignment = Alignment.Center
+            ){
+                Text("BOTAOES")
+
+            }
+
+
         } else {
             Spacer(Modifier.height(24.dp))
             Text("Preciso da permissão da câmera para mostrar ao vivo.")
@@ -63,10 +88,29 @@ fun MainScreen() {
                 Text("Permitir câmera")
             }
         }
+        */
 
-        // resto da tela (os 30% restantes + espaço)
-        Spacer(Modifier.weight(1f))
-        Text("Área abaixo do preview")
-        Spacer(Modifier.height(16.dp))
+        //aqui nessa box fica a home, faq e a camera, parte principal
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(0.85f)
+                .fillMaxHeight(),
+
+            contentAlignment = Alignment.Center
+        ){
+            Home()
+        }
+
+        //nessa box coloca os botes de mudar menu, camera, FAQ
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(0.15f)
+                .fillMaxHeight(),
+            contentAlignment = Alignment.Center
+        ){
+            Text("aqui fica os botes")
+        }
     }
 }
