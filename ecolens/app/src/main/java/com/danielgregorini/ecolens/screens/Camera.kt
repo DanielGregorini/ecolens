@@ -22,7 +22,7 @@ fun Camera(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text("dsdsd")
-        //CameraPreview(modifier = Modifier.fillMaxWidth())
+        CameraPreview(modifier = Modifier.fillMaxWidth())
     }
 }
+

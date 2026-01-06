@@ -72,9 +72,9 @@ fun CameraPreview(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.7f)   //70% da tela
+            .fillMaxHeight(1f)   //70% da tela
             .padding(paddingDp.dp)
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(9.dp))
             .background(androidx.compose.material3.MaterialTheme.colorScheme.surfaceVariant)
     ) {
         AndroidView(
