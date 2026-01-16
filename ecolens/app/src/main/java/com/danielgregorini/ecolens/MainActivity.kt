@@ -14,25 +14,22 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.danielgregorini.ecolens.data.FirstLaunchStore
-import com.danielgregorini.ecolens.ui.components.CameraPreview
-import com.danielgregorini.ecolens.screens.Home
-
-import androidx.compose.runtime.rememberCoroutineScope
 import com.danielgregorini.ecolens.screens.Camera
+import com.danielgregorini.ecolens.screens.FAQ
+import com.danielgregorini.ecolens.screens.Home
+import com.danielgregorini.ecolens.screens.OnBoarding
+import com.danielgregorini.ecolens.ui.components.Buttons
 import kotlinx.coroutines.launch
 
-
-import com.danielgregorini.ecolens.ui.components.Buttons
-
-import com.danielgregorini.ecolens.screens.FAQ
-import com.danielgregorini.ecolens.screens.OnBoarding
+//ONBOARDING sempre aparecer
+private const val ALWAYS_SHOW_ONBOARDING = false
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -43,48 +40,50 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainScreen() {
     val context = LocalContext.current
-
-    // controla qual "tela" está selecionada
-    var selected by remember { mutableStateOf("home") }
-
-    var showFaqFullScreen by remember { mutableStateOf<Boolean?>(null) }
-
-    LaunchedEffect(Unit) {
-        showFaqFullScreen = FirstLaunchStore.isFirstLaunch(context)
-    }
-
     val scope = rememberCoroutineScope()
 
-    // enquanto não carregou ainda
-    if (showFaqFullScreen == null) {
-        return
+    // controle de telas
+    var selected by remember { mutableStateOf("home") }
+
+    // controle do onboarding
+    var showOnBoarding by remember { mutableStateOf<Boolean?>(null) }
+
+    // decide se mostra onboarding
+    LaunchedEffect(Unit) {
+        showOnBoarding = if (ALWAYS_SHOW_ONBOARDING) {
+            true
+        } else {
+            FirstLaunchStore.isFirstLaunch(context)
+        }
     }
 
-    if (showFaqFullScreen == true) {
+    // enquanto carrega
+    if (showOnBoarding == null) return
+
+    // -------- ONBOARDING --------
+    if (showOnBoarding == true) {
         OnBoarding(
-            onClose = {
-                //  aqui NÃO chama composable, só muda estado
-                showFaqFullScreen = false
+            onFinish = {
+                showOnBoarding = false
                 selected = "home"
 
-
-                scope.launch {
-                    FirstLaunchStore.setLaunched(context)
+                if (!ALWAYS_SHOW_ONBOARDING) {
+                    scope.launch {
+                        FirstLaunchStore.setLaunched(context)
+                    }
                 }
-
-                // se precisar chamar função suspend, usa coroutine
-                // scope.launch { FirstLaunchStore.setLaunched(context) }
             }
         )
         return
     }
 
-    // essa parte meio que ignora por enquanto
+    // -------- APP NORMAL --------
+
+    // permissão de câmera (guardada para depois)
     var hasPermission by remember {
         mutableStateOf(
             ContextCompat.checkSelfPermission(
@@ -100,91 +99,38 @@ fun MainScreen() {
         hasPermission = granted
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
+    Column(modifier = Modifier.fillMaxSize()) {
 
-        /*
-       if (hasPermission) {
-           //CameraPreview(modifier = Modifier.fillMaxWidth())
-              Box(
-                  modifier = Modifier
-                      .fillMaxWidth()
-                      .weight(0.8f)
-                      .fillMaxHeight(),
-
-                  contentAlignment = Alignment.Center
-              ){
-                  Home()
-              }
-
-           //ai coloca os botes de mudar menu, camera, FAQ
-           Box(
-               modifier = Modifier
-                   .fillMaxWidth()
-                   .weight(0.2f)
-                   .fillMaxHeight(),
-               contentAlignment = Alignment.Center
-           ){
-               Text("BOTAOES")
-
-           }
-
-
-       } else {
-           Spacer(Modifier.height(24.dp))
-           Text("Preciso da permissão da câmera para mostrar ao vivo.")
-           Spacer(Modifier.height(12.dp))
-           Button(onClick = { launcher.launch(Manifest.permission.CAMERA) }) {
-               Text("Permitir câmera")
-           }
-       }
-       */
-
-        // aqui nessa box fica a home, faq e a camera, parte principal
+        // CONTEÚDO PRINCIPAL
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(0.85f)
-                .fillMaxHeight(),
+                .weight(0.82f),
             contentAlignment = Alignment.Center
         ) {
-
-            // AQUI É ONDE VOCÊ VAI COLOCAR OS COMPONENTES DE VERDADE
-            // por enquanto só texto pra testar a troca de "telas"
             when (selected) {
-                "home" -> {
-                    Home()
-                }
-
-                "camera" -> {
-                    Camera()
-                }
-
-                "faq" -> {
-                   FAQ()
-                }
+                "home" -> Home()
+                "camera" -> Camera()
+                "faq" -> FAQ()
             }
         }
 
-        // nessa box coloca os botoes de mudar menu, camera, FAQ
+        // BOTTOM BUTTONS
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(0.15f)
-                .fillMaxHeight(),
+                .weight(0.18f),
             contentAlignment = Alignment.Center
         ) {
             Buttons(
                 onHomeClick = { selected = "home" },
                 onCameraClick = {
                     selected = "camera"
-                    // depois você coloca a lógica da câmera aqui
-                    // ex: launcher.launch(Manifest.permission.CAMERA)
+                    // futuramente:
+                    // launcher.launch(Manifest.permission.CAMERA)
                 },
                 onFaqClick = { selected = "faq" }
             )
         }
     }
 }
-

@@ -16,9 +16,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.danielgregorini.ecolens.ui.theme.AnswerColor
+import com.danielgregorini.ecolens.ui.theme.DividerColor
+import com.danielgregorini.ecolens.ui.theme.EcoGreen
 
 data class FaqItem(
     val question: String,
@@ -41,56 +46,57 @@ fun FAQ(
             ),
             FaqItem(
                 question = "O EcoLens mostra onde descartar cada tipo de lixo?",
-                answer = "A ideia é indicar a categoria e orientar o descarte. Você pode adaptar para regras locais (ecopontos, recicláveis, orgânicos, etc.)."
+                answer = "A ideia é indicar a categoria e orientar o descarte. Você pode adaptar para regras locais."
             ),
             FaqItem(
                 question = "É seguro enviar fotos para o app?",
-                answer = "Se a classificação for no dispositivo (on-device), a imagem não precisa sair do telemóvel. Se usar cloud, dá para aplicar políticas de privacidade."
+                answer = "Se a classificação for no dispositivo, a imagem não sai do telemóvel. Em cloud, políticas de privacidade podem ser aplicadas."
             ),
             FaqItem(
                 question = "O app funciona para qualquer tipo de lixo?",
-                answer = "Funciona melhor para categorias comuns. Itens muito específicos podem ter menor precisão dependendo do dataset/modelo."
+                answer = "Funciona melhor para categorias comuns. Itens muito específicos podem ter menor precisão."
             )
         )
     }
 
     var expandedIndex by remember { mutableStateOf<Int?>(null) }
 
-    Surface(modifier = modifier.fillMaxSize()) {
+    Surface(
+        modifier = modifier.fillMaxSize(),
+        color = Color.White
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 20.dp)
-                .padding(top = 28.dp)
+                .padding(horizontal = 24.dp)
+                .padding(top = 32.dp)
         ) {
 
-            // Topo: EcoLens (cor primária) e título FAQ
+            // Logo / Nome
             Text(
                 text = "EcoLens",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineMedium,
+                fontSize = 26.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.primary
+                color = EcoGreen
             )
 
-            Spacer(Modifier.height(18.dp))
+            Spacer(Modifier.height(16.dp))
 
+            // Título
             Text(
                 text = "FAQ",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Black
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Black,
+                color = Color.Black
             )
 
-            Spacer(Modifier.height(18.dp))
+            Spacer(Modifier.height(24.dp))
 
-            // Lista de perguntas
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(bottom = 24.dp)
-            ) {
+            LazyColumn {
                 itemsIndexed(faqItems) { index, item ->
                     val expanded = expandedIndex == index
 
@@ -102,40 +108,44 @@ fun FAQ(
                             }
                             .padding(vertical = 14.dp)
                     ) {
+
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
                                 text = item.question,
                                 modifier = Modifier.weight(1f),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.primary
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = EcoGreen
                             )
 
                             Icon(
-                                imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
+                                imageVector = if (expanded)
+                                    Icons.Filled.KeyboardArrowUp
+                                else
+                                    Icons.Filled.KeyboardArrowDown,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
+                                tint = EcoGreen
                             )
                         }
 
                         AnimatedVisibility(visible = expanded) {
-                            Column(
+                            Text(
+                                text = item.answer,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(top = 10.dp, end = 28.dp)
-                            ) {
-                                Text(
-                                    text = item.answer,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
+                                    .padding(top = 10.dp, end = 32.dp),
+                                fontSize = 14.sp,
+                                color = AnswerColor
+                            )
                         }
                     }
 
-                    Divider()
+                    Divider(
+                        color = DividerColor,
+                        thickness = 1.dp
+                    )
                 }
             }
         }
