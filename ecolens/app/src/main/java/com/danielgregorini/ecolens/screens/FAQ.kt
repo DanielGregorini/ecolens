@@ -69,7 +69,7 @@ fun FAQ(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 24.dp)
-                .padding(top = 32.dp)
+                .padding(top = 40.dp)
         ) {
 
             // Logo / Nome

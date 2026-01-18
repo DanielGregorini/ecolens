@@ -98,7 +98,7 @@ fun Camera() {
             analysis.setAnalyzer(executor) { imageProxy ->
                 val now = System.currentTimeMillis()
 
-                // 🔁 roda a IA a cada 700ms
+                //tempo que roda a IA
                 if (now - lastAnalyzedTime > 700) {
                     lastAnalyzedTime = now
                     try {

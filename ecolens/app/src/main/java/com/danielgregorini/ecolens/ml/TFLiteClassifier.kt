@@ -16,7 +16,7 @@ class TFLiteClassifier(context: Context) {
         val model = FileUtil.loadMappedFile(context, "model.tflite")
         interpreter = Interpreter(model)
 
-        // 🔥 LER JSON CORRETAMENTE
+        //ler json
         labels = loadLabelsFromJson(context)
     }
 

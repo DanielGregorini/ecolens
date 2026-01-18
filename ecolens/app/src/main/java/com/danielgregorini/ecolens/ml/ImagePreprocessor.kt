@@ -11,13 +11,13 @@ private const val BYTES_PER_CHANNEL = 4 // FLOAT32
 
 fun imageProxyToByteBuffer(imageProxy: ImageProxy): ByteBuffer {
 
-    // 1️⃣ ImageProxy (YUV) → Bitmap
+    // ImageProxy (YUV) para bitmap
     val bitmap = imageProxyToBitmap(imageProxy)
 
-    // 2️⃣ Garante ARGB_8888
+    // Garante ARGB_8888
     val rgbBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, false)
 
-    // 3️⃣ Resize para 224x224
+    // Resize para 224x224
     val resized = Bitmap.createScaledBitmap(
         rgbBitmap,
         IMAGE_SIZE,
@@ -25,7 +25,7 @@ fun imageProxyToByteBuffer(imageProxy: ImageProxy): ByteBuffer {
         true
     )
 
-    // 4️⃣ Buffer FLOAT32 [1,224,224,3]
+    // buffer FLOAT32 [1,224,224,3]
     val buffer = ByteBuffer.allocateDirect(
         IMAGE_SIZE * IMAGE_SIZE * 3 * BYTES_PER_CHANNEL
     ).order(ByteOrder.nativeOrder())

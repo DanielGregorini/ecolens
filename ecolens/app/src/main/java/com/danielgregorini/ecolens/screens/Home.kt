@@ -47,7 +47,7 @@ private fun HomeContent(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 20.dp)
-            .padding(top = 24.dp)
+            .padding(top = 40.dp)
     ) {
 
         Text(
