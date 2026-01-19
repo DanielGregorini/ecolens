@@ -110,7 +110,7 @@ private fun HomeContent(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             CategoryItem(WasteCategory.PAPER, onCategoryClick)
-            CategoryItem(WasteCategory.PLASTIC, onCategoryClick)
+            CategoryItem(WasteCategory.PLASTIC_METAL, onCategoryClick)
             CategoryItem(WasteCategory.GLASS, onCategoryClick)
             CategoryItem(WasteCategory.ORGANIC, onCategoryClick)
         }
@@ -227,59 +227,64 @@ private enum class WasteCategory(
     val items: List<String>,
     val note: String
 ) {
+
     PAPER(
         label = "Papel",
-        title = "Papel e cartão",
-        subtitle = "Lixo azul",
+        title = "Papel e Cartão",
+        subtitle = "Ecoponto Azul",
         icon = R.drawable.blue,
-        background = Color(0xFFB3E5FC),
+        background = Color(0xFFBBDEFB),
         items = listOf(
             "Jornais",
             "Revistas",
             "Caixas de cartão",
             "Papel de escrita",
-            "Embalagens de papel/cartão"
+            "Embalagens de papel e cartão"
         ),
-        note = "Não inclui papel engordurado, guardanapos sujos ou fraldas."
+        note = "Não colocar papel sujo, guardanapos usados, fraldas ou papel engordurado."
     ),
-    PLASTIC(
-        label = "Plástico",
-        title = "Plástico e metal",
-        subtitle = "Lixo amarelo",
+
+    PLASTIC_METAL(
+        label = "Plástico e Metal",
+        title = "Plástico e Metal",
+        subtitle = "Ecoponto Amarelo",
         icon = R.drawable.yellow,
-        background = Color(0xFFFFF3CD),
+        background = Color(0xFFFFF9C4),
         items = listOf(
-            "Garrafas de plástico",
-            "Latas",
-            "Embalagens de iogurte",
-            "Pacotes de leite"
+            "Garrafas e embalagens de plástico",
+            "Latas de bebidas e conservas",
+            "Pacotes de leite e sumos",
+            "Embalagens de iogurte"
         ),
-        note = "Esvazie as embalagens antes de descartar."
+        note = "As embalagens devem estar vazias e, se possível, espalmadas."
     ),
+
     GLASS(
-        label = "Vidro e Metal",
-        title = "Vidro Metal",
-        subtitle = "Lixo verde",
+        label = "Vidro",
+        title = "Vidro",
+        subtitle = "Ecoponto Verde",
         icon = R.drawable.green,
         background = Color(0xFFC8E6C9),
         items = listOf(
-            "Garrafas",
+            "Garrafas de vidro",
             "Frascos",
-            "Latas"
+            "Boiões"
         ),
-        note = "Não inclui espelhos, loiça ou cerâmica."
+        note = "Não colocar loiça, cerâmica, espelhos ou lâmpadas."
     ),
+
     ORGANIC(
         label = "Orgânico",
-        title = "Orgânico",
-        subtitle = "Lixo castanho",
+        title = "Resíduos Orgânicos",
+        subtitle = "Ecoponto Castanho",
         icon = R.drawable.brown,
         background = Color(0xFFD7CCC8),
         items = listOf(
             "Restos de comida",
-            "Cascas de frutas",
-            "Borras de café"
+            "Cascas de frutas e legumes",
+            "Borras de café",
+            "Restos de pão"
         ),
-        note = "Disponível apenas onde há recolha orgânica."
+        note = "Disponível apenas em municípios com recolha seletiva de orgânicos."
     )
 }
