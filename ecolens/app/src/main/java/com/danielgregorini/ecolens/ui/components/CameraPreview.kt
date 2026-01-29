@@ -24,7 +24,7 @@
     ) {
         val context = LocalContext.current
         val lifecycleOwner = LocalLifecycleOwner.current
-
+,
         val classifier = remember { TFLiteClassifier(context) }
         val executor = remember { Executors.newSingleThreadExecutor() }
         val mainExecutor = ContextCompat.getMainExecutor(context)
